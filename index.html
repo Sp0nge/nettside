@@ -3,66 +3,129 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Min Nettbutikk - Forside</title>
-    <!-- Vi bruker Bootstrap for ferdig design -->
+    <title>Min Nettside</title>
+    <!-- Bootstrap CSS (Gratis bibliotek) -->
     <link href="https://jsdelivr.net" rel="stylesheet">
     <style>
-        .hero-section { background: #e9ecef; padding: 60px 0; text-align: center; margin-bottom: 30px; }
-        .nav-link { font-weight: 500; }
+        :root {
+            --header-height: 70px;
+            --sidebar-width: 240px;
+        }
+
+        /* Fast Header */
+        .top-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: var(--header-height);
+            background: white;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1030;
+        }
+
+        .logo-placeholder {
+            height: 45px;
+            width: 120px;
+            background: #eee; /* Midlertidig farge til du har bilde */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        /* Fast Sidemeny */
+        .sidebar {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height));
+            background: #f8f9fa;
+            border-right: 1px solid #dee2e6;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        /* Hovedinnhold - flytter seg til høyre for menyen */
+        .main-content {
+            margin-top: var(--header-height);
+            margin-left: var(--sidebar-width);
+            padding: 40px;
+        }
+
+        .nav-link { color: #333; margin-bottom: 10px; border-radius: 5px; }
+        .nav-link:hover { background: #e9ecef; }
+        .nav-link.active { background: #0d6efd; color: white; }
+
+        /* Mobil-tilpasning */
+        @media (max-width: 768px) {
+            .sidebar { display: none; } /* Enkelt i starten: skjul på mobil */
+            .main-content { margin-left: 0; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- NAVIGASJONSMENY -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container">
-            <a class="navbar-brand" href="index.html"><strong>MIN BUTIKK</strong></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Hjem</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="interior.html">Interiør</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Klær (Kommer)</a>
-                    </li>
-                </ul>
-            </div>
+    <!-- TOP HEADER -->
+    <header class="top-header">
+        <div class="logo-placeholder">
+            <!-- Når du har logo: <img src="logo.png" height="40"> -->
+            LOGO
+        </div>
+        <h4 class="ms-3 mb-0">Ditt Firmanavn</h4>
+    </header>
+
+    <!-- SIDEMENY -->
+    <nav class="sidebar">
+        <div class="nav flex-column nav-pills">
+            <a class="nav-link active" href="index.html">Forside</a>
+            <a class="nav-link" href="interior.html">Nettbutikk</a>
+            <a class="nav-link" href="#">Nyheter</a>
+            <a class="nav-link" href="#">Om oss</a>
         </div>
     </nav>
 
-    <!-- FORSIDEINNHOLD -->
-    <div class="hero-section">
-        <div class="container">
-            <h1>Velkommen til min nye nettside</h1>
-            <p class="lead">Her bygger jeg fundamentet før Shopify flytter inn.</p>
-            <a href="interior.html" class="btn btn-dark btn-lg">Se kategorier</a>
-        </div>
-    </div>
+    <!-- HOVEDINNHOLD -->
+    <main class="main-content">
+        <div class="container-fluid">
+            
+            <div class="row">
+                <!-- Siste Nyhet -->
+                <div class="col-lg-8">
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-body">
+                            <span class="badge bg-primary mb-2">Siste nyhet</span>
+                            <h2 class="card-title">Velkommen til vår nye portal</h2>
+                            <p class="card-text text-muted">Her vil vi poste oppdateringer fortløpende. Akkurat nå jobber vi med å klargjøre varelageret for den nye butikken.</p>
+                        </div>
+                    </div>
+                </div>
 
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-md-4">
-                <h3>Eget Design</h3>
-                <p>Full kontroll over kildekoden.</p>
+                <!-- Bestselger-plassholder -->
+                <div class="col-lg-4">
+                    <div class="card shadow-sm border-primary">
+                        <div class="card-header bg-primary text-white">Mest solgt i dag</div>
+                        <div class="card-body text-center">
+                            <div class="py-4" style="background: #f1f1f1; border-radius: 5px; margin-bottom: 15px;">
+                                [ Shopify Bilde ]
+                            </div>
+                            <h5>Produktnavn</h5>
+                            <p class="fw-bold">499,-</p>
+                            <button class="btn btn-dark w-100">Kjøp nå</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4">
-                <h3>GitHub Hosting</h3>
-                <p>Gratis og raskt på nett.</p>
-            </div>
-            <div class="col-md-4">
-                <h3>Shopify Klar</h3>
-                <p>Klargjort for Buy Button senere.</p>
-            </div>
-        </div>
-    </div>
 
-    <!-- Bootstrap JS (nødvendig for at menyen skal virke på mobil) -->
+        </div>
+    </main>
+
+    <!-- Bootstrap JS (nødvendig for funksjonalitet) -->
     <script src="https://jsdelivr.net"></script>
 </body>
 </html>
