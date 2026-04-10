@@ -3,164 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Min Nettside</title>
-    <!-- Bootstrap CSS (Gratis bibliotek) -->
+    <title>Almars.no - Forside</title>
+    <!-- Bootstrap CSS for profesjonelt utseende (gratis) -->
     <link href="https://jsdelivr.net" rel="stylesheet">
     <style>
         :root {
-            --header-height: 70px;
-            --sidebar-width: 240px;
+            --header-height: 80px;
+            --sidebar-width: 250px;
         }
 
-        /* Fast Header */
-        .top-header {
+        body {
+            background-color: #fcfcfc;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* TOP HEADER */
+        header.main-header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: var(--header-height);
-            background: white;
-            border-bottom: 1px solid #dee2e6;
+            background: #ffffff;
+            border-bottom: 1px solid #eee;
+            z-index: 1050;
             display: flex;
             align-items: center;
-            padding: 0 20px;
-            z-index: 1030;
+            padding: 0 25px;
         }
 
-        .logo-placeholder {
-            height: 45px;
-            width: 120px;
-            background: #eee; /* Midlertidig farge til du har bilde */
+        .logo-box {
+            height: 50px;
+            width: 150px;
+            background: #f0f0f0; /* Bytter til bilde når du har filen */
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            border-radius: 5px;
+            letter-spacing: 1px;
+            border-radius: 4px;
         }
 
-        /* Fast Sidemeny */
-        .sidebar {
+        /* SIDEMENY */
+        nav.sidebar {
             position: fixed;
             top: var(--header-height);
             left: 0;
             width: var(--sidebar-width);
             height: calc(100vh - var(--header-height));
             background: #f8f9fa;
-            border-right: 1px solid #dee2e6;
-            padding: 20px;
-            overflow-y: auto;
+            border-right: 1px solid #eee;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Låser juridisk til bunnen */
+            z-index: 1040;
         }
 
-        /* Hovedinnhold - flytter seg til høyre for menyen */
-        .main-content {
+        .nav-link {
+            color: #333;
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            transition: 0.2s;
+        }
+
+        .nav-link:hover {
+            background-color: #e9ecef;
+            color: #0d6efd;
+        }
+
+        .nav-link.active {
+            background-color: #0d6efd;
+            color: white !important;
+        }
+
+        /* JURIDISKE LENKER I BUNNEN AV MENY */
+        .legal-links {
+            border-top: 1px solid #dee2e6;
+            padding-top: 15px;
+        }
+
+        .legal-links a {
+            display: block;
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-decoration: none;
+            margin-bottom: 6px;
+        }
+
+        .legal-links a:hover {
+            color: #333;
+            text-decoration: underline;
+        }
+
+        /* HOVEDINNHOLD */
+        main.content {
             margin-top: var(--header-height);
             margin-left: var(--sidebar-width);
             padding: 40px;
         }
 
-        .nav-link { color: #333; margin-bottom: 10px; border-radius: 5px; }
-        .nav-link:hover { background: #e9ecef; }
-        .nav-link.active { background: #0d6efd; color: white; }
+        .news-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
 
-        /* Mobil-tilpasning */
+        .product-preview {
+            background: white;
+            border: 2px solid #0d6efd;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Mobil-håndtering */
         @media (max-width: 768px) {
-            .sidebar { display: none; } /* Enkelt i starten: skjul på mobil */
-            .main-content { margin-left: 0; }
+            nav.sidebar { display: none; }
+            main.content { margin-left: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- TOP HEADER -->
-    <header class="top-header">
-        <div class="logo-placeholder">
-            <!-- Når du har logo: <img src="logo.png" height="40"> -->
-            LOGO
+    <!-- HEADER -->
+    <header class="main-header shadow-sm">
+        <div class="logo-box">
+            <!-- Erstatt med <img src="logo.png" height="40"> når du har bilde -->
+            ALMARS
         </div>
-        <h4 class="ms-3 mb-0">Ditt Firmanavn</h4>
+        <h4 class="ms-3 mb-0 d-none d-md-block">Almars.no</h4>
     </header>
 
     <!-- SIDEMENY -->
     <nav class="sidebar">
-        <div class="nav flex-column nav-pills">
-            <a class="nav-link active" href="index.html">Forside</a>
-            <a class="nav-link" href="interior.html">Nettbutikk</a>
-            <a class="nav-link" href="#">Nyheter</a>
-            <a class="nav-link" href="#">Om oss</a>
-        </div>
-    </nav>
-
-    <!-- HOVEDINNHOLD -->
-    <main class="main-content">
-        <div class="container-fluid">
-            
-            <div class="row">
-                <!-- Siste Nyhet -->
-                <div class="col-lg-8">
-                    <div class="card mb-4 shadow-sm">
-                        <div class="card-body">
-                            <span class="badge bg-primary mb-2">Siste nyhet</span>
-                            <h2 class="card-title">Velkommen til vår nye portal</h2>
-                            <p class="card-text text-muted">Her vil vi poste oppdateringer fortløpende. Akkurat nå jobber vi med å klargjøre varelageret for den nye butikken.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Bestselger-plassholder -->
-                <div class="col-lg-4">
-                    <div class="card shadow-sm border-primary">
-                        <div class="card-header bg-primary text-white">Mest solgt i dag</div>
-                        <div class="card-body text-center">
-                            <div class="py-4" style="background: #f1f1f1; border-radius: 5px; margin-bottom: 15px;">
-                                [ Shopify Bilde ]
-                            </div>
-                            <h5>Produktnavn</h5>
-                            <p class="fw-bold">499,-</p>
-                            <button class="btn btn-dark w-100">Kjøp nå</button>
-                        </div>
-                    </div>
-                </div>
+        <div class="nav-top">
+            <div class="nav flex-column nav-pills">
+                <a class="nav-link active" href="index.html">Forside</a>
+                <a class="nav-link" href="interior.html">Nettbutikk</a>
+                <a class="nav-link" href="#">Nyheter</a>
+                <a class="nav-link" href="#">Om oss</a>
             </div>
-
         </div>
-    </main>
 
-    <!-- Bootstrap JS (nødvendig for funksjonalitet) -->
-    <script src="https://jsdelivr.net"></script>
-<!-- FOOTER MED JURIDISKE LENKER -->
-<footer class="legal-footer">
-    <div class="container-fluid">
-        <div class="d-flex justify-content-center flex-wrap gap-3 py-3 border-top mt-5">
+        <div class="legal-links">
+            <small class="text-muted d-block mb-2 fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Juridisk info</small>
             <a href="https://almars.no" target="_blank">Personvern</a>
             <a href="https://almars.no" target="_blank">Angrerett</a>
             <a href="https://almars.no" target="_blank">Vilkår for bruk</a>
             <a href="https://almars.no" target="_blank">Frakt</a>
             <a href="https://almars.no" target="_blank">Kontakt</a>
         </div>
-        <p class="text-center text-muted small pb-3">© 2024 Almars. Alle rettigheter reservert.</p>
-    </div>
-</footer>
+    </nav>
 
-<style>
-    /* Sørger for at footeren tar hensyn til sidemenyen på store skjermer */
-    .legal-footer {
-        margin-left: var(--sidebar-width);
-        background: white;
-    }
-    .legal-footer a {
-        color: #6c757d;
-        text-decoration: none;
-        font-size: 0.85rem;
-    }
-    .legal-footer a:hover {
-        color: #0d6efd;
-        text-decoration: underline;
-    }
+    <!-- HOVEDINNHOLD -->
+    <main class="content">
+        <div class="container-fluid">
+            <div class="row">
+                
+                <!-- NYHETSFELT -->
+                <div class="col-lg-8">
+                    <div class="news-card">
+                        <span class="badge bg-primary mb-3">Siste nytt</span>
+                        <h1>Velkommen til Almars</h1>
+                        <p class="lead text-muted">Nettsiden er for øyeblikket under konstruksjon, men vi klargjør nå våre egne kategorier og varelager.</p>
+                        <hr>
+                        <p>Dette er forsiden hvor du alltid vil finne de nyeste oppdateringene fra oss. Vi jobber med å integrere Shopify slik at kjøpsopplevelsen blir sømløs på vårt eget domene.</p>
+                    </div>
+                </div>
 
-    @media (max-width: 768px) {
-        .legal-footer { margin-left: 0; }
-    }
-</style>
+                <!-- BESTSELLER / SHOPIFY PREVIEW -->
+                <div class="col-lg-4">
+                    <div class="product-preview">
+                        <h5 class="text-primary mb-3">Mest populær akkurat nå</h5>
+                        <div style="height: 200px; background: #f9f9f9; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; color: #bbb;">
+                            Produktbilde her
+                        </div>
+                        <h6>Bestselgende Produkt</h6>
+                        <p class="fw-bold">499,-</p>
+                        <button class="btn btn-dark w-100 mt-2">Kjøp nå</button>
+                    </div>
+                </div>
 
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://jsdelivr.net"></script>
 </body>
 </html>
