@@ -127,5 +127,40 @@
 
     <!-- Bootstrap JS (nødvendig for funksjonalitet) -->
     <script src="https://jsdelivr.net"></script>
+<!-- FOOTER MED JURIDISKE LENKER -->
+<footer class="legal-footer">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-center flex-wrap gap-3 py-3 border-top mt-5">
+            <a href="https://almars.no" target="_blank">Personvern</a>
+            <a href="https://almars.no" target="_blank">Angrerett</a>
+            <a href="https://almars.no" target="_blank">Vilkår for bruk</a>
+            <a href="https://almars.no" target="_blank">Frakt</a>
+            <a href="https://almars.no" target="_blank">Kontakt</a>
+        </div>
+        <p class="text-center text-muted small pb-3">© 2024 Almars. Alle rettigheter reservert.</p>
+    </div>
+</footer>
+
+<style>
+    /* Sørger for at footeren tar hensyn til sidemenyen på store skjermer */
+    .legal-footer {
+        margin-left: var(--sidebar-width);
+        background: white;
+    }
+    .legal-footer a {
+        color: #6c757d;
+        text-decoration: none;
+        font-size: 0.85rem;
+    }
+    .legal-footer a:hover {
+        color: #0d6efd;
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .legal-footer { margin-left: 0; }
+    }
+</style>
+
 </body>
 </html>
