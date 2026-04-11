@@ -3,62 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Almars.no - Forside</title>
-    <!-- Bootstrap & Icons -->
+    <title>Almars.no</title>
     <link href="https://jsdelivr.net" rel="stylesheet">
     <link rel="stylesheet" href="https://jsdelivr.net">
     <style>
+        * { box-sizing: border-box; }
         :root { --header-height: 65px; --sidebar-width: 240px; --primary-blue: #0d6efd; }
-        body { background-color: #f8f9fa; margin: 0; font-family: 'Inter', sans-serif; height: 100vh; }
+        
+        body { background-color: #f8f9fa; margin: 0; font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; }
         
         header.main-header { position: fixed; top: 0; width: 100%; height: var(--header-height); background: #fff; border-bottom: 1px solid #e0e0e0; z-index: 1050; display: flex; align-items: center; padding: 0 20px; }
         .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; margin-right: 15px; }
 
-        nav.sidebar { position: fixed; top: var(--header-height); left: 0; width: var(--sidebar-width); height: calc(100vh - var(--header-height)); background: #fff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column; padding: 15px; z-index: 1040; transition: transform 0.3s; overflow-y: auto; }
+        nav.sidebar { 
+            position: fixed; top: var(--header-height); left: 0; width: var(--sidebar-width); 
+            height: calc(100vh - var(--header-height)); background: #fff; border-right: 1px solid #e0e0e0; 
+            display: flex; flex-direction: column; z-index: 1040; transition: transform 0.3s; 
+        }
         
-        /* Meny-stiler */
+        .nav-scroll-area { flex: 1; overflow-y: auto; padding: 15px; }
+        
         .nav-link { color: #444; padding: 10px; text-decoration: none; display: flex; align-items: center; justify-content: space-between; border-radius: 6px; font-weight: 500; cursor: pointer; }
         .nav-link:hover { background: #f0f4f8; }
-        .nav-link.active { background: var(--primary-blue); color: #fff; }
+        .nav-link.active { background: var(--primary-blue); color: #fff !important; }
 
-        /* Undermeny for kategorier */
-        .submenu { list-style: none; padding-left: 25px; display: none; margin-top: 5px; }
+        .submenu { list-style: none; padding-left: 20px; display: none; margin-bottom: 10px; }
         .submenu.show { display: block; }
-        .submenu-link { color: #666; padding: 6px 10px; text-decoration: none; display: block; font-size: 0.85rem; border-radius: 4px; }
-        .submenu-link:hover { color: var(--primary-blue); background: #f8f9fa; }
+        .submenu-link { color: #666; padding: 5px 10px; text-decoration: none; display: block; font-size: 0.85rem; }
 
-        main.content { margin-top: var(--header-height); margin-left: var(--sidebar-width); padding: 25px; }
-        .shopify-wrapper { background: #fff; border: 1px solid #eef0f2; border-radius: 12px; padding: 20px; min-height: 400px; text-align: center; }
+        .legal-links { flex-shrink: 0; border-top: 1px solid #eee; padding: 15px; background: #fff; }
+        .legal-links a { display: block; font-size: 0.75rem; color: #777; text-decoration: none; padding: 3px 0; }
+
+        main.content { margin-top: var(--header-height); margin-left: var(--sidebar-width); padding: 25px; height: calc(100vh - var(--header-height)); overflow-y: auto; }
+        .shopify-wrapper { background: #fff; border: 1px solid #eef0f2; border-radius: 12px; padding: 20px; min-height: 450px; }
 
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
             nav.sidebar { transform: translateX(-100%); }
             body.menu-open nav.sidebar { transform: translateX(0); }
             main.content { margin-left: 0; }
+            .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 1030; }
+            body.menu-open .sidebar-overlay { display: block; }
         }
     </style>
 </head>
 <body id="body">
 
+    <div class="sidebar-overlay" onclick="toggleMenu()"></div>
+
     <header class="main-header">
         <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-        <div style="font-weight:800; letter-spacing: 1px;">ALMARS</div>
+        <div style="font-weight:800;">ALMARS</div>
+        <h5 class="ms-3 mb-0 d-none d-sm-block">Almars.no</h5>
     </header>
 
     <nav class="sidebar">
-        <div style="flex:1">
-            <a class="nav-link active" href="index.html">
-                <span><i class="bi bi-house-door me-2"></i> Forside</span>
-            </a>
+        <div class="nav-scroll-area">
+            <a class="nav-link active" href="index.html"><span><i class="bi bi-house-door me-2"></i> Forside</span></a>
             
-            <!-- Nettbutikk med dropdown -->
             <div class="nav-item">
                 <div class="nav-link" onclick="toggleSubmenu()">
                     <span><i class="bi bi-bag me-2"></i> Nettbutikk</span>
                     <i class="bi bi-chevron-down small" id="chevron"></i>
                 </div>
                 <div class="submenu" id="categoryMenu">
-                    <!-- Placeholders 1-15 -->
                     <script>
                         for (let i = 1; i <= 15; i++) {
                             document.write(`<a href="#" class="submenu-link">Kategori ${i}</a>`);
@@ -66,31 +74,29 @@
                     </script>
                 </div>
             </div>
-
-            <a class="nav-link" href="#">
-                <span><i class="bi bi-newspaper me-2"></i> Nyheter</span>
-            </a>
+            <a class="nav-link" href="#"><span><i class="bi bi-newspaper me-2"></i> Nyheter</span></a>
         </div>
 
-        <div style="border-top: 1px solid #eee; padding-top:10px; font-size: 0.8rem;">
-            <small class="text-muted d-block mb-2">INFORMASJON</small>
-            <a href="#" style="color:#777; text-decoration:none; display:block; padding: 2px 0;">Kontakt</a>
-            <a href="#" style="color:#777; text-decoration:none; display:block; padding: 2px 0;">Vilkår</a>
+        <div class="legal-links">
+            <small class="text-muted d-block mb-1 fw-bold" style="font-size: 0.6rem;">INFORMASJON</small>
+            <a href="#">Personvern</a>
+            <a href="#">Frakt & Retur</a>
+            <a href="#">Kontakt oss</a>
         </div>
     </nav>
 
     <main class="content">
         <div class="container-fluid">
             <div class="row g-4">
-                <div class="col-md-8">
+                <div class="col-xl-8">
                     <div class="card p-4 border-0 shadow-sm" style="border-radius: 12px;">
-                        <h2 class="fw-bold">Oversikt</h2>
-                        <p class="text-muted">Nå har du fått en ryddig meny med plass til mange kategorier.</p>
+                        <h2 class="fw-bold">Velkommen tilbake</h2>
+                        <p class="text-muted">Nå er layouten låst slik at bunnmenyen og produktet alltid er synlig.</p>
                         <hr>
-                        <p>Når du trykker på "Nettbutikk", foldes de 15 kategoriene ut.</p>
+                        <p>Kategorilisten til venstre kan nå scrolles uavhengig hvis den blir for lang.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-xl-4">
                     <div class="shopify-wrapper shadow-sm">
                         <div id='product-component-1775938707606'></div>
                     </div>
@@ -100,20 +106,13 @@
     </main>
 
     <script>
-        function toggleMenu() { 
-            document.getElementById('body').classList.toggle('menu-open'); 
-        }
-
+        function toggleMenu() { document.getElementById('body').classList.toggle('menu-open'); }
         function toggleSubmenu() {
-            const menu = document.getElementById('categoryMenu');
-            const chevron = document.getElementById('chevron');
-            menu.classList.toggle('show');
-            chevron.classList.toggle('bi-chevron-up');
-            chevron.classList.toggle('bi-chevron-down');
+            document.getElementById('categoryMenu').classList.toggle('show');
+            document.getElementById('chevron').classList.toggle('bi-chevron-up');
         }
     </script>
 
-    <!-- Shopify Script (Samme som før) -->
     <script type="text/javascript">
     (function () {
       var scriptURL = 'https://shopifycdn.com';
@@ -127,7 +126,7 @@
             id: '8606093672606',
             node: document.getElementById('product-component-1775938707606'),
             moneyFormat: '%7B%7Bamount_with_comma_separator%7D%7D%20kr',
-            options: { "product": { "styles": { "button": { "background-color": "#0d6efd" } } } }
+            options: { "product": { "styles": { "button": { "background-color": "#0d6efd", "border-radius": "8px" } }, "text": { "button": "Kjøp nå" } } }
           });
         });
       }
