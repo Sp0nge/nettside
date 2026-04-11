@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Almars.no</title>
+    <!-- Bootstrap & Ikoner -->
     <link href="https://jsdelivr.net" rel="stylesheet">
     <link rel="stylesheet" href="https://jsdelivr.net">
     <style>
@@ -12,15 +13,19 @@
         
         body { background-color: #f8f9fa; margin: 0; font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; }
         
+        /* HEADER */
         header.main-header { position: fixed; top: 0; width: 100%; height: var(--header-height); background: #fff; border-bottom: 1px solid #e0e0e0; z-index: 1050; display: flex; align-items: center; padding: 0 20px; }
         .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; margin-right: 15px; }
+        .logo-text { font-weight: 800; letter-spacing: 1px; color: #333; text-decoration: none; }
 
+        /* SIDEBAR STRUKTUR */
         nav.sidebar { 
             position: fixed; top: var(--header-height); left: 0; width: var(--sidebar-width); 
             height: calc(100vh - var(--header-height)); background: #fff; border-right: 1px solid #e0e0e0; 
-            display: flex; flex-direction: column; z-index: 1040; transition: transform 0.3s; 
+            display: flex; flex-direction: column; z-index: 1040; transition: transform 0.3s ease;
         }
         
+        /* Rulleområde for kategorier */
         .nav-scroll-area { flex: 1; overflow-y: auto; padding: 15px; }
         
         .nav-link { color: #444; padding: 10px; text-decoration: none; display: flex; align-items: center; justify-content: space-between; border-radius: 6px; font-weight: 500; cursor: pointer; }
@@ -29,19 +34,24 @@
 
         .submenu { list-style: none; padding-left: 20px; display: none; margin-bottom: 10px; }
         .submenu.show { display: block; }
-        .submenu-link { color: #666; padding: 5px 10px; text-decoration: none; display: block; font-size: 0.85rem; }
+        .submenu-link { color: #666; padding: 5px 10px; text-decoration: none; display: block; font-size: 0.85rem; border-radius: 4px; }
+        .submenu-link:hover { background: #f8f9fa; color: var(--primary-blue); }
 
+        /* JURIDISKE LENKER - ALLTID SYNLIG I BUNN */
         .legal-links { flex-shrink: 0; border-top: 1px solid #eee; padding: 15px; background: #fff; }
-        .legal-links a { display: block; font-size: 0.75rem; color: #777; text-decoration: none; padding: 3px 0; }
+        .legal-links a { display: block; font-size: 0.75rem; color: #777; text-decoration: none; padding: 4px 0; }
+        .legal-links a:hover { color: #333; text-decoration: underline; }
 
+        /* HOVEDINNHOLD */
         main.content { margin-top: var(--header-height); margin-left: var(--sidebar-width); padding: 25px; height: calc(100vh - var(--header-height)); overflow-y: auto; }
-        .shopify-wrapper { background: #fff; border: 1px solid #eef0f2; border-radius: 12px; padding: 20px; min-height: 450px; }
+        .shopify-wrapper { background: #fff; border: 1px solid #eef0f2; border-radius: 12px; padding: 20px; min-height: 500px; text-align: center; }
 
+        /* MOBIL-TILPASNING */
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
-            nav.sidebar { transform: translateX(-100%); }
+            nav.sidebar { transform: translateX(-100%); width: 260px; }
             body.menu-open nav.sidebar { transform: translateX(0); }
-            main.content { margin-left: 0; }
+            main.content { margin-left: 0; padding: 15px; }
             .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 1030; }
             body.menu-open .sidebar-overlay { display: block; }
         }
@@ -52,14 +62,17 @@
     <div class="sidebar-overlay" onclick="toggleMenu()"></div>
 
     <header class="main-header">
-        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-        <div style="font-weight:800;">ALMARS</div>
-        <h5 class="ms-3 mb-0 d-none d-sm-block">Almars.no</h5>
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="bi bi-list"></i></button>
+        <a href="index.html" class="logo-text">ALMARS</a>
+        <h5 class="ms-3 mb-0 d-none d-sm-block fw-bold">Almars.no</h5>
     </header>
 
     <nav class="sidebar">
+        <!-- Øverste del som kan rulle -->
         <div class="nav-scroll-area">
-            <a class="nav-link active" href="index.html"><span><i class="bi bi-house-door me-2"></i> Forside</span></a>
+            <a class="nav-link active" href="index.html">
+                <span><i class="bi bi-house-door me-2"></i> Forside</span>
+            </a>
             
             <div class="nav-item">
                 <div class="nav-link" onclick="toggleSubmenu()">
@@ -75,12 +88,16 @@
                 </div>
             </div>
             <a class="nav-link" href="#"><span><i class="bi bi-newspaper me-2"></i> Nyheter</span></a>
+            <a class="nav-link" href="#"><span><i class="bi bi-info-circle me-2"></i> Om oss</span></a>
         </div>
 
+        <!-- Nederste del som er låst -->
         <div class="legal-links">
-            <small class="text-muted d-block mb-1 fw-bold" style="font-size: 0.6rem;">INFORMASJON</small>
+            <small class="text-muted d-block mb-1 fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Informasjon</small>
             <a href="#">Personvern</a>
-            <a href="#">Frakt & Retur</a>
+            <a href="#">Angrerett</a>
+            <a href="#">Vilkår for bruk</a>
+            <a href="#">Frakt</a>
             <a href="#">Kontakt oss</a>
         </div>
     </nav>
@@ -90,14 +107,17 @@
             <div class="row g-4">
                 <div class="col-xl-8">
                     <div class="card p-4 border-0 shadow-sm" style="border-radius: 12px;">
-                        <h2 class="fw-bold">Velkommen tilbake</h2>
-                        <p class="text-muted">Nå er layouten låst slik at bunnmenyen og produktet alltid er synlig.</p>
+                        <span class="badge bg-primary mb-3" style="width: fit-content;">Oppdatert</span>
+                        <h2 class="fw-bold">Nå er alt på plass!</h2>
+                        <p class="text-muted">Vi har nå en side der sidefeltet er delt i to: En del som ruller (kategoriene) og en del som står stille (informasjon).</p>
                         <hr>
-                        <p>Kategorilisten til venstre kan nå scrolles uavhengig hvis den blir for lang.</p>
+                        <p>Shopify-produktet ditt skal nå laste korrekt i rammen til høyre.</p>
                     </div>
                 </div>
+                <!-- SHOPIFY PRODUKT -->
                 <div class="col-xl-4">
                     <div class="shopify-wrapper shadow-sm">
+                        <h6 class="text-primary fw-bold text-uppercase mb-3" style="font-size: 0.75rem;">Utvalgt produkt</h6>
                         <div id='product-component-1775938707606'></div>
                     </div>
                 </div>
@@ -108,11 +128,15 @@
     <script>
         function toggleMenu() { document.getElementById('body').classList.toggle('menu-open'); }
         function toggleSubmenu() {
-            document.getElementById('categoryMenu').classList.toggle('show');
-            document.getElementById('chevron').classList.toggle('bi-chevron-up');
+            const menu = document.getElementById('categoryMenu');
+            const chevron = document.getElementById('chevron');
+            menu.classList.toggle('show');
+            chevron.classList.toggle('bi-chevron-up');
+            chevron.classList.toggle('bi-chevron-down');
         }
     </script>
 
+    <!-- Shopify Buy Button Script -->
     <script type="text/javascript">
     (function () {
       var scriptURL = 'https://shopifycdn.com';
@@ -126,7 +150,15 @@
             id: '8606093672606',
             node: document.getElementById('product-component-1775938707606'),
             moneyFormat: '%7B%7Bamount_with_comma_separator%7D%7D%20kr',
-            options: { "product": { "styles": { "button": { "background-color": "#0d6efd", "border-radius": "8px" } }, "text": { "button": "Kjøp nå" } } }
+            options: { 
+                "product": { 
+                    "styles": { 
+                        "button": { "background-color": "#0d6efd", "border-radius": "8px", "padding": "12px 24px" },
+                        "product": { "text-align": "center" }
+                    }, 
+                    "text": { "button": "Kjøp nå" } 
+                } 
+            }
           });
         });
       }
