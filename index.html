@@ -7,7 +7,7 @@
     <link href="https://jsdelivr.net" rel="stylesheet">
     <link rel="stylesheet" href="https://jsdelivr.net">
     <style>
-        :root { --header-height: 65px; --sidebar-width: 240px; }
+        :root { --header-height: 65px; --sidebar-width: 240px; --primary-blue: #0d6efd; }
         body { background-color: #f8f9fa; margin: 0; font-family: 'Inter', sans-serif; }
         
         header.main-header { position: fixed; top: 0; width: 100%; height: var(--header-height); background: #fff; border-bottom: 1px solid #e0e0e0; z-index: 1050; display: flex; align-items: center; padding: 0 20px; }
@@ -16,7 +16,7 @@
         nav.sidebar { position: fixed; top: var(--header-height); left: 0; width: var(--sidebar-width); height: calc(100vh - var(--header-height)); background: #fff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column; z-index: 1040; transition: transform 0.3s ease; }
         .nav-scroll-area { flex: 1; overflow-y: auto; padding: 15px; }
         .nav-link { color: #444; padding: 10px; text-decoration: none; display: flex; align-items: center; justify-content: space-between; border-radius: 6px; font-weight: 500; cursor: pointer; }
-        .nav-link.active { background: #0d6efd; color: #fff !important; }
+        .nav-link.active { background: var(--primary-blue); color: #fff !important; }
         .submenu { list-style: none; padding-left: 20px; display: none; }
         .submenu.show { display: block; }
         .submenu-link { color: #666; padding: 5px 10px; text-decoration: none; display: block; font-size: 0.85rem; }
@@ -80,13 +80,13 @@
             <div class="row">
                 <div class="col-xl-8">
                     <div class="card p-4 border-0 shadow-sm" style="border-radius: 12px;">
-                        <h2 class="fw-bold">Velkommen</h2>
-                        <p>Nå skal produktet dukke opp til høyre.</p>
+                        <h2 class="fw-bold">Almars.no</h2>
+                        <p>Hvis produktet ikke vises med en gang, vent 2 sekunder.</p>
                     </div>
                 </div>
                 <div class="col-xl-4">
                     <div class="shopify-wrapper shadow-sm">
-                        <!-- Her lastes produktet -->
+                        <!-- ID-en som Shopify-skriptet SKAL finne -->
                         <div id='product-component-1775938707606'></div>
                     </div>
                 </div>
@@ -100,32 +100,32 @@
             document.getElementById('categoryMenu').classList.toggle('show');
             document.getElementById('chevron').classList.toggle('bi-chevron-up');
         }
-    </script>
 
-    <!-- Shopify Script - plassert for maksimal synlighet -->
-    <script type="text/javascript">
-    (function () {
-      var scriptURL = 'https://shopifycdn.com';
-      function ShopifyBuyInit() {
-        var client = ShopifyBuy.buildClient({
-          domain: '://myshopify.com',
-          storefrontAccessToken: '22fd5102cdd15a5e237f985e917cce4c',
-        });
-        ShopifyBuy.UI.onReady(client).then(function (ui) {
-          ui.createComponent('product', {
-            id: '8606093672606',
-            node: document.getElementById('product-component-1775938707606'),
-            moneyFormat: '%7B%7Bamount_with_comma_separator%7D%7D%20kr',
-            options: { "product": { "styles": { "button": { "background-color": "#0d6efd" } } } }
-          });
-        });
-      }
-      var script = document.createElement('script');
-      script.async = true;
-      script.src = scriptURL;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
-      script.onload = ShopifyBuyInit;
-    })();
+        // Shopify Script som KUN kjører etter at ALT annet er ferdig
+        window.onload = function() {
+            var scriptURL = 'https://shopifycdn.com';
+            function ShopifyBuyInit() {
+                var client = ShopifyBuy.buildClient({
+                    domain: '://myshopify.com',
+                    storefrontAccessToken: '22fd5102cdd15a5e237f985e917cce4c',
+                });
+                ShopifyBuy.UI.onReady(client).then(function (ui) {
+                    ui.createComponent('product', {
+                        id: '8606093672606',
+                        node: document.getElementById('product-component-1775938707606'),
+                        moneyFormat: '%7B%7Bamount_with_comma_separator%7D%7D%20kr',
+                        options: { "product": { "styles": { "button": { "background-color": "#0d6efd" } } } }
+                    });
+                });
+            }
+            if (window.ShopifyBuy) { ShopifyBuyInit(); } 
+            else {
+                var script = document.createElement('script');
+                script.async = true; script.src = scriptURL;
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+                script.onload = ShopifyBuyInit;
+            }
+        };
     </script>
 </body>
 </html>
