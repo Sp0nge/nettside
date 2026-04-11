@@ -6,7 +6,7 @@
     <title>Almars.no - Forside</title>
     <link href="https://jsdelivr.net" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; } /* Viktig for å hindre at padding dytter ting ut */
+        * { box-sizing: border-box; }
 
         :root {
             --header-height: 65px;
@@ -22,6 +22,7 @@
             overflow-x: hidden;
         }
 
+        /* HEADER */
         header.main-header {
             position: fixed;
             top: 0;
@@ -34,6 +35,17 @@
             display: flex;
             align-items: center;
             padding: 0 20px;
+        }
+
+        /* HAMBURGER-KNAPP (skjult på desktop) */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            margin-right: 15px;
         }
 
         .logo-box {
@@ -49,12 +61,12 @@
             font-size: 0.85rem;
         }
 
+        /* SIDEMENY */
         nav.sidebar {
             position: fixed;
             top: var(--header-height);
             left: 0;
             width: var(--sidebar-width);
-            /* Bruker nøyaktig gjenværende høyde */
             height: calc(100vh - var(--header-height)); 
             background: #ffffff;
             border-right: 1px solid #e0e0e0;
@@ -62,11 +74,10 @@
             display: flex;
             flex-direction: column;
             z-index: 1040;
+            transition: transform 0.3s ease; /* Animasjon for mobil */
         }
 
-        .nav-top {
-            flex: 1 1 auto; /* Lar denne delen ta plassen den trenger */
-        }
+        .nav-top { flex: 1 1 auto; }
 
         .nav-column {
             display: flex;
@@ -76,11 +87,11 @@
 
         .nav-link {
             color: #444;
-            padding: 8px 12px;
+            padding: 10px 12px;
             border-radius: 6px;
             text-decoration: none;
             font-weight: 500;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
         }
 
         .nav-link.active {
@@ -88,12 +99,11 @@
             color: white !important;
         }
 
-        /* JURIDISK INFO - KOMPRIMERT */
         .legal-links {
-            flex-shrink: 0; /* Hindrer at denne delen blir dyttet ut av skjerm */
+            flex-shrink: 0;
             border-top: 1px solid #eee;
             padding: 10px 0;
-            margin-bottom: 5px; /* Litt luft helt nederst */
+            margin-bottom: 5px;
         }
 
         .legal-links a {
@@ -101,13 +111,15 @@
             font-size: 0.75rem;
             color: #777;
             text-decoration: none;
-            padding: 2px 0;
+            padding: 4px 0;
         }
 
+        /* HOVEDINNHOLD */
         main.content {
             margin-top: var(--header-height);
             margin-left: var(--sidebar-width);
             padding: 25px;
+            transition: margin 0.3s ease;
         }
 
         .main-card {
@@ -117,22 +129,48 @@
             border: 1px solid #eef0f2;
         }
 
-        .shopify-card {
-            background: #fff;
-            border: 1px solid #0d6efd;
-            border-radius: 12px;
-            padding: 15px;
-        }
-
+        /* MOBIL-STILER */
         @media (max-width: 768px) {
-            nav.sidebar { display: none; }
-            main.content { margin-left: 0; }
+            .menu-toggle { display: block; }
+            
+            nav.sidebar {
+                transform: translateX(-100%); /* Skjul menyen til venstre */
+                box-shadow: 5px 0 15px rgba(0,0,0,0.1);
+            }
+
+            /* Når menyen er åpen på mobil */
+            body.menu-open nav.sidebar {
+                transform: translateX(0);
+            }
+
+            main.content {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            /* Overlay for å lukke menyen ved å trykke utenfor */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.3);
+                z-index: 1030;
+            }
+
+            body.menu-open .sidebar-overlay { display: block; }
         }
     </style>
 </head>
-<body>
+<body id="body">
+
+    <!-- Overlay for mobil -->
+    <div class="sidebar-overlay" onclick="toggleMenu()"></div>
 
     <header class="main-header">
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
         <div class="logo-box">ALMARS</div>
         <h5 class="ms-3 mb-0 fw-bold">Almars.no</h5>
     </header>
@@ -162,28 +200,23 @@
             <div class="row g-4">
                 <div class="col-xl-8">
                     <div class="main-card">
-                        <span class="badge bg-primary px-3 py-2 mb-3">Siste oppdatering</span>
+                        <span class="badge bg-primary px-3 py-2 mb-3">Forside</span>
                         <h2 class="fw-bold">Velkommen til Almars</h2>
-                        <p class="text-muted">Her bygger vi kildekoden fra bunnen av for full kontroll.</p>
+                        <p class="text-muted">Trykk på hamburger-ikonet øverst til venstre hvis du ser dette på mobil!</p>
                         <hr>
-                        <p>Produktene dukker opp her når de er klare.</p>
-                    </div>
-                </div>
-
-                <div class="col-xl-4">
-                    <div class="shopify-card text-center">
-                        <h6 class="text-primary fw-bold mb-3">Mest populær</h6>
-                        <div style="height: 150px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;">
-                            <span class="text-muted small">Bilde</span>
-                        </div>
-                        <h5 class="mb-1">Testprodukt</h5>
-                        <div class="fw-bold mb-3">599,-</div>
-                        <button class="btn btn-primary btn-sm w-100 fw-bold">Kjøp nå</button>
+                        <p>Her kan du begynne å legge inn innholdet ditt.</p>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- JavaScript for å åpne/lukke menyen -->
+    <script>
+        function toggleMenu() {
+            document.getElementById('body').classList.toggle('menu-open');
+        }
+    </script>
 
 </body>
 </html>
