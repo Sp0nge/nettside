@@ -10,7 +10,7 @@
         * { box-sizing: border-box; }
         :root { --header-height: 65px; --sidebar-width: 240px; --primary-blue: #0d6efd; }
         
-        body { background-color: #f8f9fa; margin: 0; font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; }
+        body { background-color: #f8f9fa; margin: 0; font-family: 'Inter', sans-serif; min-height: 100vh; }
         
         header.main-header { position: fixed; top: 0; width: 100%; height: var(--header-height); background: #fff; border-bottom: 1px solid #e0e0e0; z-index: 1050; display: flex; align-items: center; padding: 0 20px; }
         .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; margin-right: 15px; }
@@ -31,15 +31,22 @@
         .submenu { list-style: none; padding-left: 20px; display: none; margin-bottom: 10px; }
         .submenu.show { display: block; }
         .submenu-link { color: #666; padding: 5px 10px; text-decoration: none; display: block; font-size: 0.85rem; border-radius: 4px; }
-        .submenu-link:hover { background: #f8f9fa; color: var(--primary-blue); }
 
-        /* DE 5 JURIDISKE LENKENE */
         .legal-links { flex-shrink: 0; border-top: 1px solid #eee; padding: 12px 15px; background: #fff; }
         .legal-links a { display: block; font-size: 0.75rem; color: #777; text-decoration: none; padding: 3px 0; }
-        .legal-links a:hover { color: #333; text-decoration: underline; }
 
-        main.content { margin-top: var(--header-height); margin-left: var(--sidebar-width); padding: 25px; height: calc(100vh - var(--header-height)); overflow-y: auto; }
-        .shopify-wrapper { background: #fff; border: 1px solid #eef0f2; border-radius: 12px; padding: 20px; min-height: 500px; text-align: center; }
+        main.content { margin-top: var(--header-height); margin-left: var(--sidebar-width); padding: 25px; }
+        
+        /* Viktig fix for Shopify-visning */
+        .shopify-wrapper { 
+            background: #fff; 
+            border: 1px solid #eef0f2; 
+            border-radius: 12px; 
+            padding: 20px; 
+            min-height: 550px; /* Sikrer plass til produktet */
+            display: block;
+            width: 100%;
+        }
 
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
@@ -57,13 +64,13 @@
 
     <header class="main-header">
         <button class="menu-toggle" onclick="toggleMenu()"><i class="bi bi-list"></i></button>
-        <a href="index.html" class="logo-text">ALMARS</a>
+        <a href="#" class="logo-text">ALMARS</a>
         <h5 class="ms-3 mb-0 d-none d-sm-block fw-bold">Almars.no</h5>
     </header>
 
     <nav class="sidebar">
         <div class="nav-scroll-area">
-            <a class="nav-link active" href="index.html"><span><i class="bi bi-house-door me-2"></i> Forside</span></a>
+            <a class="nav-link active" href="#"><span><i class="bi bi-house-door me-2"></i> Forside</span></a>
             <div class="nav-item">
                 <div class="nav-link" onclick="toggleSubmenu()">
                     <span><i class="bi bi-bag me-2"></i> Nettbutikk</span>
@@ -78,10 +85,8 @@
                 </div>
             </div>
             <a class="nav-link" href="#"><span><i class="bi bi-newspaper me-2"></i> Nyheter</span></a>
-            <a class="nav-link" href="#"><span><i class="bi bi-info-circle me-2"></i> Om oss</span></a>
         </div>
 
-        <!-- ALLE 5 LENKER ER HER -->
         <div class="legal-links">
             <small class="text-muted d-block mb-1 fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Informasjon</small>
             <a href="#">Personvern</a>
@@ -97,12 +102,13 @@
             <div class="row g-4">
                 <div class="col-xl-8">
                     <div class="card p-4 border-0 shadow-sm" style="border-radius: 12px;">
-                        <h2 class="fw-bold">Nå er alle lenker tilbake</h2>
-                        <p class="text-muted">Vi har nå gjenopprettet de 5 lenkene i bunnen og sikret at de alltid er synlige.</p>
+                        <h2 class="fw-bold">Velkommen</h2>
+                        <p class="text-muted">Nå skal både menyene og produktet være på plass samtidig.</p>
                     </div>
                 </div>
                 <div class="col-xl-4">
                     <div class="shopify-wrapper shadow-sm">
+                        <!-- ID-en som Shopify-scriptet leter etter -->
                         <div id='product-component-1775938707606'></div>
                     </div>
                 </div>
@@ -118,6 +124,7 @@
         }
     </script>
 
+    <!-- Shopify Script lagt helt til slutt -->
     <script type="text/javascript">
     (function () {
       var scriptURL = 'https://shopifycdn.com';
@@ -139,7 +146,7 @@
       else {
         var script = document.createElement('script');
         script.async = true; script.src = scriptURL;
-        (document.getElementsByTagName('head') || document.getElementsByTagName('body')).appendChild(script);
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
         script.onload = ShopifyBuyInit;
       }
     })();
