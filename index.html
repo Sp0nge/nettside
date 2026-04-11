@@ -7,107 +7,110 @@
     <link href="https://jsdelivr.net" rel="stylesheet">
     <link rel="stylesheet" href="https://jsdelivr.net">
     <style>
-        :root { --header-height: 65px; --sidebar-width: 240px; --primary-blue: #0d6efd; }
-        body { background-color: #f8f9fa; margin: 0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        :root { --sidebar-width: 260px; --accent: #0d6efd; }
+        body { background-color: #f4f7f9; font-family: 'Inter', system-ui, sans-serif; margin: 0; }
+
+        /* HEADER */
+        .top-nav { height: 60px; background: #fff; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; padding: 0 20px; position: fixed; width: 100%; top: 0; z-index: 1000; }
+        .brand { font-weight: 800; font-size: 1.2rem; color: #333; text-decoration: none; }
+        .menu-btn { display: none; background: none; border: none; font-size: 1.5rem; margin-right: 15px; }
+
+        /* SIDEBAR */
+        .sidebar { width: var(--sidebar-width); background: #fff; border-right: 1px solid #e0e0e0; height: calc(100vh - 60px); position: fixed; top: 60px; left: 0; display: flex; flex-direction: column; transition: 0.3s; z-index: 999; }
+        .nav-items { flex: 1; overflow-y: auto; padding: 20px; }
+        .nav-group-title { font-size: 0.7rem; font-weight: 700; color: #999; text-transform: uppercase; letter-spacing: 1px; margin: 20px 0 10px 10px; }
         
-        header.main-header { position: fixed; top: 0; width: 100%; height: var(--header-height); background: #fff; border-bottom: 1px solid #e0e0e0; z-index: 1050; display: flex; align-items: center; padding: 0 20px; }
-        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; margin-right: 15px; cursor: pointer; }
+        .nav-link-custom { display: flex; align-items: center; padding: 10px 15px; color: #444; text-decoration: none; border-radius: 8px; font-weight: 500; transition: 0.2s; margin-bottom: 2px; }
+        .nav-link-custom:hover { background: #f0f4f8; color: var(--accent); }
+        .nav-link-custom.active { background: var(--accent); color: #fff; }
+        .nav-link-custom i { margin-right: 12px; }
 
-        nav.sidebar { position: fixed; top: var(--header-height); left: 0; width: var(--sidebar-width); height: calc(100vh - var(--header-height)); background: #fff; border-right: 1px solid #e0e0e0; display: flex; flex-direction: column; z-index: 1040; transition: transform 0.3s ease; }
-        .nav-scroll-area { flex: 1; overflow-y: auto; padding: 15px; }
-        .nav-link { color: #444; padding: 10px; text-decoration: none; display: flex; align-items: center; justify-content: space-between; border-radius: 6px; font-weight: 500; cursor: pointer; }
-        .nav-link.active { background: var(--primary-blue); color: #fff !important; }
-        .submenu { list-style: none; padding-left: 20px; display: none; }
-        .submenu.show { display: block; }
-        .submenu-link { color: #666; padding: 5px 10px; text-decoration: none; display: block; font-size: 0.85rem; }
+        /* JURIDISK BUNN */
+        .sidebar-footer { padding: 20px; border-top: 1px solid #f0f0f0; }
+        .legal-link { display: block; font-size: 0.8rem; color: #888; text-decoration: none; padding: 4px 0; }
+        .legal-link:hover { color: #333; }
 
-        .legal-links { flex-shrink: 0; border-top: 1px solid #eee; padding: 12px 15px; background: #fff; }
-        .legal-links a { display: block; font-size: 0.75rem; color: #777; text-decoration: none; padding: 3px 0; }
+        /* CONTENT */
+        main { margin-left: var(--sidebar-width); padding: 90px 30px 30px; }
+        .main-card { background: #fff; border-radius: 16px; padding: 30px; border: 1px solid #eef0f2; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .shopify-container { background: #fff; border-radius: 16px; padding: 20px; border: 1px solid #eef0f2; min-height: 500px; }
 
-        main.content { margin-top: var(--header-height); margin-left: var(--sidebar-width); padding: 25px; }
-        .product-box { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 20px; min-height: 500px; text-align: center; }
-
-        @media (max-width: 768px) {
-            .menu-toggle { display: block; }
-            nav.sidebar { transform: translateX(-100%); }
-            body.menu-open nav.sidebar { transform: translateX(0); }
-            main.content { margin-left: 0; }
-            .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 1030; }
-            body.menu-open .sidebar-overlay { display: block; }
+        /* MOBIL */
+        @media (max-width: 992px) {
+            .menu-btn { display: block; }
+            .sidebar { transform: translateX(-100%); }
+            body.show-menu .sidebar { transform: translateX(0); }
+            main { margin-left: 0; padding: 80px 15px 15px; }
+            .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 998; }
+            body.show-menu .overlay { display: block; }
         }
     </style>
 </head>
-<body id="body">
+<body id="page-body">
 
-    <div class="sidebar-overlay" onclick="toggleMenu()"></div>
+    <div class="overlay" onclick="toggleMenu()"></div>
 
-    <header class="main-header">
-        <button class="menu-toggle" onclick="toggleMenu()"><i class="bi bi-list"></i></button>
-        <div style="font-weight:800; color:#333;">ALMARS</div>
-    </header>
-
-    <nav class="sidebar">
-        <div class="nav-scroll-area">
-            <a class="nav-link active" href="#"><span><i class="bi bi-house-door me-2"></i> Forside</span></a>
-            <div class="nav-item">
-                <div class="nav-link" onclick="toggleSubmenu()">
-                    <span><i class="bi bi-bag me-2"></i> Nettbutikk</span>
-                    <i class="bi bi-chevron-down small" id="chevron"></i>
-                </div>
-                <div class="submenu" id="categoryMenu">
-                    <script>
-                        for (let i = 1; i <= 15; i++) {
-                            document.write(`<a href="#" class="submenu-link">Kategori ${i}</a>`);
-                        }
-                    </script>
-                </div>
-            </div>
-            <a class="nav-link" href="#"><span><i class="bi bi-newspaper me-2"></i> Nyheter</span></a>
-        </div>
-
-        <div class="legal-links">
-            <small class="text-muted d-block mb-1 fw-bold" style="font-size: 0.65rem;">INFORMASJON</small>
-            <a href="#">Personvern</a>
-            <a href="#">Angrerett</a>
-            <a href="#">Vilkår for bruk</a>
-            <a href="#">Frakt</a>
-            <a href="#">Kontakt oss</a>
-        </div>
+    <nav class="top-nav">
+        <button class="menu-btn" onclick="toggleMenu()"><i class="bi bi-list"></i></button>
+        <a href="#" class="brand">ALMARS</a>
     </nav>
 
-    <main class="content">
+    <aside class="sidebar">
+        <div class="nav-items">
+            <a href="#" class="nav-link-custom active"><i class="bi bi-house"></i> Forside</a>
+            
+            <div class="nav-group-title">Nettbutikk</div>
+            <div id="category-list">
+                <!-- Genererer 15 kategorier -->
+                <script>
+                    for(let i=1; i<=15; i++) {
+                        document.write(`<a href="#" class="nav-link-custom"><i class="bi bi-tag"></i> Kategori ${i}</a>`);
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="nav-group-title" style="margin: 0 0 10px 0;">Informasjon</div>
+            <a href="#" class="legal-link">Personvern</a>
+            <a href="#" class="legal-link">Angrerett</a>
+            <a href="#" class="legal-link">Vilkår for bruk</a>
+            <a href="#" class="legal-link">Frakt</a>
+            <a href="#" class="legal-link">Kontakt oss</a>
+        </div>
+    </aside>
+
+    <main>
         <div class="row g-4">
-            <div class="col-md-8">
-                <div class="card p-4 border-0 shadow-sm" style="border-radius:12px;">
-                    <h2 class="fw-bold">Velkommen til Almars</h2>
-                    <p class="text-muted">Nå bruker vi din helt nye Shopify-nøkkel for maksimal stabilitet.</p>
+            <div class="col-lg-8">
+                <div class="main-card">
+                    <h1 class="fw-bold mb-4">Velkommen til nye Almars.no</h1>
+                    <p class="lead text-muted">Dette er et helt rent design bygget for fart og enkelhet.</p>
+                    <hr class="my-4">
+                    <p>Vi har nå strukturert menyen slik at den er lettere å navigere, og vi har lagt til rette for at Shopify-produktet skal laste uten forstyrrelser.</p>
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="product-box shadow-sm">
-                    <!-- Din NYE Shopify-komponent -->
+            <div class="col-lg-4">
+                <div class="shopify-container text-center">
+                    <!-- SHOPIFY START -->
                     <div id='product-component-1775941591790'></div>
+                    <!-- SHOPIFY END -->
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="https://jsdelivr.net"></script>
     <script>
-        function toggleMenu() { document.getElementById('body').classList.toggle('menu-open'); }
-        function toggleSubmenu() {
-            document.getElementById('categoryMenu').classList.toggle('show');
-            document.getElementById('chevron').classList.toggle('bi-chevron-up');
-        }
+        function toggleMenu() { document.getElementById('page-body').classList.toggle('show-menu'); }
     </script>
 
-    <!-- DIN NYE SHOPIFY SCRIPT KODE -->
+    <!-- SHOPIFY SDK -->
     <script type="text/javascript">
     (function () {
-      var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+      var scriptURL = 'https://shopifycdn.com';
       function ShopifyBuyInit() {
         var client = ShopifyBuy.buildClient({
-          domain: 'bzj3u1-s6.myshopify.com',
+          domain: '://myshopify.com',
           storefrontAccessToken: '22fd5102cdd15a5e237f985e917cce4c',
         });
         ShopifyBuy.UI.onReady(client).then(function (ui) {
@@ -118,22 +121,19 @@
             options: {
               "product": {
                 "styles": {
-                  "button": { "background-color": "#0d6efd", "border-radius": "8px" },
+                  "button": { "background-color": "#0d6efd", "border-radius": "8px", "padding": "12px 30px" },
                   "product": { "@media (min-width: 601px)": { "max-width": "100%", "margin-left": "0", "margin-bottom": "0" } }
                 },
                 "text": { "button": "Kjøp nå" }
               }
-            },
+            }
           });
         });
       }
-      if (window.ShopifyBuy) { ShopifyBuyInit(); } 
-      else {
-        var script = document.createElement('script');
-        script.async = true; script.src = scriptURL;
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
-        script.onload = ShopifyBuyInit;
-      }
+      var script = document.createElement('script');
+      script.async = true; script.src = scriptURL;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+      script.onload = ShopifyBuyInit;
     })();
     </script>
 </body>
