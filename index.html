@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Almars.no - Forside</title>
-    <!-- Korrekt Bootstrap CSS -->
     <link href="https://jsdelivr.net" rel="stylesheet">
     <style>
+        * { box-sizing: border-box; } /* Viktig for å hindre at padding dytter ting ut */
+
         :root {
-            --header-height: 70px; /* Litt lavere header for å spare plass */
+            --header-height: 65px;
             --sidebar-width: 240px;
             --primary-blue: #0d6efd;
         }
@@ -17,10 +18,10 @@
             background-color: #f8f9fa;
             margin: 0;
             font-family: 'Inter', -apple-system, sans-serif;
+            height: 100vh;
             overflow-x: hidden;
         }
 
-        /* TOP HEADER */
         header.main-header {
             position: fixed;
             top: 0;
@@ -36,8 +37,8 @@
         }
 
         .logo-box {
-            height: 38px;
-            width: 120px;
+            height: 35px;
+            width: 110px;
             background: #eee;
             display: flex;
             align-items: center;
@@ -45,26 +46,26 @@
             font-weight: 800;
             border-radius: 6px;
             text-transform: uppercase;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        /* SIDEMENY - UTEN SCROLLING */
         nav.sidebar {
             position: fixed;
             top: var(--header-height);
             left: 0;
             width: var(--sidebar-width);
-            height: calc(100vh - var(--header-height));
+            /* Bruker nøyaktig gjenværende høyde */
+            height: calc(100vh - var(--header-height)); 
             background: #ffffff;
             border-right: 1px solid #e0e0e0;
-            padding: 15px;
+            padding: 10px 15px;
             display: flex;
             flex-direction: column;
             z-index: 1040;
         }
 
         .nav-top {
-            flex-grow: 1; /* Dytter legal-links ned til bunnen */
+            flex: 1 1 auto; /* Lar denne delen ta plassen den trenger */
         }
 
         .nav-column {
@@ -75,18 +76,11 @@
 
         .nav-link {
             color: #444;
-            padding: 10px 15px;
-            border-radius: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
             text-decoration: none;
             font-weight: 500;
-            transition: all 0.2s;
-            display: block;
-            font-size: 0.95rem;
-        }
-
-        .nav-link:hover {
-            background-color: #f0f4f8;
-            color: var(--primary-blue);
+            font-size: 0.9rem;
         }
 
         .nav-link.active {
@@ -94,63 +88,55 @@
             color: white !important;
         }
 
-        /* JURIDISKE LENKER HELT I BUNNEN */
+        /* JURIDISK INFO - KOMPRIMERT */
         .legal-links {
+            flex-shrink: 0; /* Hindrer at denne delen blir dyttet ut av skjerm */
             border-top: 1px solid #eee;
-            padding-top: 15px;
-            padding-bottom: 10px;
+            padding: 10px 0;
+            margin-bottom: 5px; /* Litt luft helt nederst */
         }
 
         .legal-links a {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: #777;
             text-decoration: none;
-            padding: 3px 0;
+            padding: 2px 0;
         }
 
-        .legal-links a:hover {
-            color: #333;
-        }
-
-        /* HOVEDINNHOLD */
         main.content {
             margin-top: var(--header-height);
             margin-left: var(--sidebar-width);
-            padding: 30px;
+            padding: 25px;
         }
 
         .main-card {
             background: white;
             border-radius: 12px;
-            padding: 30px;
+            padding: 25px;
             border: 1px solid #eef0f2;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
         }
 
         .shopify-card {
             background: #fff;
             border: 1px solid #0d6efd;
             border-radius: 12px;
-            padding: 20px;
+            padding: 15px;
         }
 
-        /* MOBIL-VISNING */
         @media (max-width: 768px) {
             nav.sidebar { display: none; }
-            main.content { margin-left: 0; padding: 15px; }
+            main.content { margin-left: 0; }
         }
     </style>
 </head>
 <body>
 
-    <!-- HEADER -->
     <header class="main-header">
         <div class="logo-box">ALMARS</div>
         <h5 class="ms-3 mb-0 fw-bold">Almars.no</h5>
     </header>
 
-    <!-- SIDEMENY -->
     <nav class="sidebar">
         <div class="nav-top">
             <div class="nav-column">
@@ -161,9 +147,8 @@
             </div>
         </div>
 
-        <!-- JURIDISK INFO LÅST TIL BUNNEN -->
         <div class="legal-links">
-            <small class="text-muted d-block mb-1 fw-bold" style="font-size: 0.65rem; text-transform: uppercase;">Informasjon</small>
+            <small class="text-muted d-block mb-1 fw-bold" style="font-size: 0.6rem; text-transform: uppercase;">Informasjon</small>
             <a href="#">Personvern</a>
             <a href="#">Angrerett</a>
             <a href="#">Vilkår for bruk</a>
@@ -172,40 +157,33 @@
         </div>
     </nav>
 
-    <!-- HOVEDINNHOLD -->
     <main class="content">
         <div class="container-fluid">
             <div class="row g-4">
-                
-                <!-- NYHETER -->
                 <div class="col-xl-8">
                     <div class="main-card">
                         <span class="badge bg-primary px-3 py-2 mb-3">Siste oppdatering</span>
-                        <h1 class="fw-bold mb-3">Velkommen til Almars</h1>
-                        <p class="lead text-muted">Dette er din nye plattform. Her bygger vi kildekoden fra bunnen av for å sikre full kontroll og lavest mulig kostnad.</p>
-                        <hr class="my-4">
-                        <p>Når du er klar for å selge produkter, vil de dukke opp i de kategoriene du velger i menyen til venstre.</p>
+                        <h2 class="fw-bold">Velkommen til Almars</h2>
+                        <p class="text-muted">Her bygger vi kildekoden fra bunnen av for full kontroll.</p>
+                        <hr>
+                        <p>Produktene dukker opp her når de er klare.</p>
                     </div>
                 </div>
 
-                <!-- BESTSELLER PREVIEW -->
                 <div class="col-xl-4">
                     <div class="shopify-card text-center">
-                        <h6 class="text-primary fw-bold text-uppercase mb-3">Mest populær</h6>
-                        <div style="height: 180px; background: #f8f9fa; border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center;">
-                            <span class="text-muted">Bilde fra Shopify</span>
+                        <h6 class="text-primary fw-bold mb-3">Mest populær</h6>
+                        <div style="height: 150px; background: #f8f9fa; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center;">
+                            <span class="text-muted small">Bilde</span>
                         </div>
-                        <h4 class="mb-1">Testprodukt</h4>
-                        <div class="h4 fw-bold mb-3">599,-</div>
-                        <button class="btn btn-primary w-100 py-2 fw-bold">Kjøp nå</button>
+                        <h5 class="mb-1">Testprodukt</h5>
+                        <div class="fw-bold mb-3">599,-</div>
+                        <button class="btn btn-primary btn-sm w-100 fw-bold">Kjøp nå</button>
                     </div>
                 </div>
-
             </div>
         </div>
     </main>
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://jsdelivr.net"></script>
 </body>
 </html>
