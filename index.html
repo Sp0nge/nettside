@@ -4,50 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Almars.no</title>
+    <!-- CSS - Bootstrap og Ikoner -->
     <link href="https://jsdelivr.net" rel="stylesheet">
     <link rel="stylesheet" href="https://jsdelivr.net">
     <style>
-        :root { --sidebar-width: 240px; }
-        body { background-color: #f8f9fa; margin: 0; font-family: sans-serif; }
+        :root { --header-height: 65px; --sidebar-width: 240px; --primary-blue: #0d6efd; }
+        body { background-color: #f8f9fa; margin: 0; font-family: 'Inter', sans-serif; }
         
-        header { position: fixed; top: 0; width: 100%; height: 60px; background: #fff; border-bottom: 1px solid #ddd; z-index: 1000; display: flex; align-items: center; padding: 0 20px; }
-        
-        nav.sidebar { position: fixed; top: 60px; left: 0; width: var(--sidebar-width); height: calc(100vh - 60px); background: #fff; border-right: 1px solid #ddd; display: flex; flex-direction: column; }
-        .nav-content { flex: 1; overflow-y: auto; padding: 15px; }
-        .nav-link { color: #333; text-decoration: none; display: block; padding: 8px; border-radius: 4px; }
-        .nav-link.active { background: #0d6efd; color: #fff; }
-        
-        .legal-links { padding: 15px; border-top: 1px solid #eee; font-size: 0.8rem; }
-        .legal-links a { display: block; color: #777; text-decoration: none; margin-bottom: 5px; }
+        /* HEADER */
+        header.main-header { 
+            position: fixed; top: 0; width: 100%; height: var(--header-height); 
+            background: #fff; border-bottom: 1px solid #e0e0e0; z-index: 2000; 
+            display: flex; align-items: center; padding: 0 20px; 
+        }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; margin-right: 15px; }
 
-        main { margin-left: var(--sidebar-width); padding: 80px 20px 20px 20px; }
-        .shopify-box { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 20px; min-height: 400px; text-align: center; }
+        /* SIDEBAR */
+        nav.sidebar { 
+            position: fixed; top: var(--header-height); left: 0; width: var(--sidebar-width); 
+            height: calc(100vh - var(--header-height)); background: #fff; border-right: 1px solid #e0e0e0; 
+            display: flex; flex-direction: column; z-index: 1040; transition: 0.3s;
+        }
+        .nav-scroll-area { flex: 1; overflow-y: auto; padding: 15px; }
+        .nav-link { color: #444; padding: 10px; text-decoration: none; display: flex; align-items: center; justify-content: space-between; border-radius: 6px; font-weight: 500; cursor: pointer; }
+        .nav-link.active { background: var(--primary-blue); color: #fff !important; }
+        .submenu { list-style: none; padding-left: 20px; display: none; margin-bottom: 10px; }
+        .submenu.show { display: block; }
+        .submenu-link { color: #666; padding: 5px 10px; text-decoration: none; display: block; font-size: 0.85rem; }
 
+        /* BUNNMENY */
+        .legal-links { flex-shrink: 0; border-top: 1px solid #eee; padding: 12px 15px; background: #fff; }
+        .legal-links a { display: block; font-size: 0.75rem; color: #777; text-decoration: none; padding: 3px 0; }
+
+        /* HOVEDOMRÅDE */
+        main.content { margin-top: var(--header-height); margin-left: var(--sidebar-width); padding: 25px; min-height: 100vh; }
+        .shopify-wrapper { background: #fff; border: 1px solid #eef0f2; border-radius: 12px; padding: 20px; min-height: 550px; text-align: center; }
+
+        /* MOBIL */
         @media (max-width: 768px) {
-            nav.sidebar { display: none; }
-            main { margin-left: 0; }
+            .menu-toggle { display: block; }
+            nav.sidebar { transform: translateX(-100%); }
+            body.menu-open nav.sidebar { transform: translateX(0); }
+            main.content { margin-left: 0; }
+            .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.3); z-index: 1035; }
+            body.menu-open .sidebar-overlay { display: block; }
         }
     </style>
 </head>
-<body>
+<body id="body">
 
-    <header>
-        <strong style="font-size: 1.2rem;">ALMARS</strong>
+    <div class="sidebar-overlay" onclick="toggleMenu()"></div>
+
+    <header class="main-header">
+        <button class="menu-toggle" onclick="toggleMenu()"><i class="bi bi-list"></i></button>
+        <div style="font-weight:800; color:#333;">ALMARS</div>
     </header>
 
     <nav class="sidebar">
-        <div class="nav-content">
-            <a href="#" class="nav-link active">Forside</a>
-            <div style="padding: 10px 0 5px 10px; font-weight: bold; font-size: 0.9rem;">Nettbutikk</div>
-            <div id="cat-list"></div>
-            <script>
-                const list = document.getElementById('cat-list');
-                for(let i=1; i<=15; i++) {
-                    list.innerHTML += `<a href="#" style="display:block; padding: 4px 10px; font-size: 0.85rem; color: #666; text-decoration:none;">Kategori ${i}</a>`;
-                }
-            </script>
+        <div class="nav-scroll-area">
+            <a class="nav-link active" href="#"><span><i class="bi bi-house-door me-2"></i> Forside</span></a>
+            <div class="nav-item">
+                <div class="nav-link" onclick="toggleSubmenu()">
+                    <span><i class="bi bi-bag me-2"></i> Nettbutikk</span>
+                    <i class="bi bi-chevron-down small" id="chevron"></i>
+                </div>
+                <div class="submenu" id="categoryMenu">
+                    <script>
+                        for (let i = 1; i <= 15; i++) {
+                            document.write(`<a href="#" class="submenu-link">Kategori ${i}</a>`);
+                        }
+                    </script>
+                </div>
+            </div>
+            <a class="nav-link" href="#"><span><i class="bi bi-newspaper me-2"></i> Nyheter</span></a>
         </div>
+
         <div class="legal-links">
+            <small class="text-muted d-block mb-1 fw-bold" style="font-size: 0.65rem;">INFORMASJON</small>
             <a href="#">Personvern</a>
             <a href="#">Angrerett</a>
             <a href="#">Vilkår for bruk</a>
@@ -56,51 +89,59 @@
         </div>
     </nav>
 
-    <main>
-        <div class="row">
-            <div class="col-md-7">
-                <div class="card p-4 shadow-sm border-0">
-                    <h3>Velkommen</h3>
-                    <p>Hvis boksen til høyre er tom, sjekk følgende i Shopify:</p>
-                    <ul style="font-size: 0.9rem;">
-                        <li>Er produktet satt til <strong>Aktiv (Active)</strong>?</li>
-                        <li>Er <strong>Buy Button</strong> valgt som salgskanal for produktet?</li>
-                    </ul>
-                    <button class="btn btn-sm btn-outline-secondary" onclick="alert('JavaScript fungerer!')">Test nettsiden</button>
+    <main class="content">
+        <div class="container-fluid">
+            <div class="row g-4">
+                <div class="col-xl-8">
+                    <div class="card p-4 border-0 shadow-sm" style="border-radius: 12px;">
+                        <h2 class="fw-bold">Layout ferdigstilt</h2>
+                        <p class="text-muted">Nå er hamburgermenyen og alle 5 lenkene i bunnen testet for stabilitet.</p>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-5">
-                <div class="shopify-box">
-                    <div id='product-component-1775938707606'></div>
+                <div class="col-xl-4">
+                    <div class="shopify-wrapper shadow-sm">
+                        <!-- Plassholder for Shopify -->
+                        <div id='product-component-1775938707606'></div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Shopify SDK -->
-    <script type="text/javascript">
-    (function () {
-      var scriptURL = 'https://shopifycdn.com';
-      function ShopifyBuyInit() {
-        var client = ShopifyBuy.buildClient({
-          domain: 'bzj3u1-s6.myshopify.com',
-          storefrontAccessToken: '22fd5102cdd15a5e237f985e917cce4c',
-        });
-        ShopifyBuy.UI.onReady(client).then(function (ui) {
-          ui.createComponent('product', {
-            id: '8606093672606',
-            node: document.getElementById('product-component-1775938707606'),
-            moneyFormat: '%7B%7Bamount_with_comma_separator%7D%7D%20kr',
-            options: { "product": { "buttonDestination": "checkout", "text": { "button": "Kjøp nå" } } }
-          });
-        });
-      }
-      var script = document.createElement('script');
-      script.async = true;
-      script.src = scriptURL;
-      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
-      script.onload = ShopifyBuyInit;
-    })();
+    <!-- JS for meny og Shopify -->
+    <script src="https://jsdelivr.net"></script>
+    <script>
+        function toggleMenu() { document.getElementById('body').classList.toggle('menu-open'); }
+        function toggleSubmenu() {
+            document.getElementById('categoryMenu').classList.toggle('show');
+            document.getElementById('chevron').classList.toggle('bi-chevron-up');
+        }
+
+        // Shopify innlasting
+        (function () {
+          var scriptURL = 'https://shopifycdn.com';
+          function ShopifyBuyInit() {
+            var client = ShopifyBuy.buildClient({
+              domain: '://myshopify.com',
+              storefrontAccessToken: '22fd5102cdd15a5e237f985e917cce4c',
+            });
+            ShopifyBuy.UI.onReady(client).then(function (ui) {
+              ui.createComponent('product', {
+                id: '8606093672606',
+                node: document.getElementById('product-component-1775938707606'),
+                moneyFormat: '%7B%7Bamount_with_comma_separator%7D%7D%20kr',
+                options: { "product": { "styles": { "button": { "background-color": "#0d6efd" } } } }
+              });
+            });
+          }
+          if (window.ShopifyBuy) { ShopifyBuyInit(); } 
+          else {
+            var script = document.createElement('script');
+            script.async = true; script.src = scriptURL;
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+            script.onload = ShopifyBuyInit;
+          }
+        })();
     </script>
 </body>
 </html>
