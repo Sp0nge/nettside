@@ -37,7 +37,6 @@
             padding: 0 20px;
         }
 
-        /* HAMBURGER-KNAPP (skjult på desktop) */
         .menu-toggle {
             display: none;
             background: none;
@@ -74,7 +73,7 @@
             display: flex;
             flex-direction: column;
             z-index: 1040;
-            transition: transform 0.3s ease; /* Animasjon for mobil */
+            transition: transform 0.3s ease;
         }
 
         .nav-top { flex: 1 1 auto; }
@@ -119,7 +118,6 @@
             margin-top: var(--header-height);
             margin-left: var(--sidebar-width);
             padding: 25px;
-            transition: margin 0.3s ease;
         }
 
         .main-card {
@@ -129,26 +127,20 @@
             border: 1px solid #eef0f2;
         }
 
-        /* MOBIL-STILER */
+        /* Container for Shopify-produktet */
+        .product-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #eef0f2;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
-            
-            nav.sidebar {
-                transform: translateX(-100%); /* Skjul menyen til venstre */
-                box-shadow: 5px 0 15px rgba(0,0,0,0.1);
-            }
-
-            /* Når menyen er åpen på mobil */
-            body.menu-open nav.sidebar {
-                transform: translateX(0);
-            }
-
-            main.content {
-                margin-left: 0;
-                padding: 15px;
-            }
-
-            /* Overlay for å lukke menyen ved å trykke utenfor */
+            nav.sidebar { transform: translateX(-100%); }
+            body.menu-open nav.sidebar { transform: translateX(0); }
+            main.content { margin-left: 0; padding: 15px; }
             .sidebar-overlay {
                 display: none;
                 position: fixed;
@@ -159,14 +151,12 @@
                 background: rgba(0,0,0,0.3);
                 z-index: 1030;
             }
-
             body.menu-open .sidebar-overlay { display: block; }
         }
     </style>
 </head>
 <body id="body">
 
-    <!-- Overlay for mobil -->
     <div class="sidebar-overlay" onclick="toggleMenu()"></div>
 
     <header class="main-header">
@@ -198,25 +188,99 @@
     <main class="content">
         <div class="container-fluid">
             <div class="row g-4">
+                <!-- NYHETSDEL -->
                 <div class="col-xl-8">
                     <div class="main-card">
-                        <span class="badge bg-primary px-3 py-2 mb-3">Forside</span>
-                        <h2 class="fw-bold">Velkommen til Almars</h2>
-                        <p class="text-muted">Trykk på hamburger-ikonet øverst til venstre hvis du ser dette på mobil!</p>
+                        <span class="badge bg-primary px-3 py-2 mb-3">Velkommen</span>
+                        <h2 class="fw-bold">Almars.no er live</h2>
+                        <p class="text-muted">Her ser du hvordan ditt første produkt ser ut når det er hentet direkte fra Shopify.</p>
                         <hr>
-                        <p>Her kan du begynne å legge inn innholdet ditt.</p>
+                        <p>Dette oppsettet gjør at du kan styre lager og priser i Shopify, mens selve nettsiden forblir lynrask og billig i drift.</p>
+                    </div>
+                </div>
+
+                <!-- DIN SHOPIFY BUY BUTTON -->
+                <div class="col-xl-4">
+                    <div class="product-container">
+                        <h6 class="text-primary fw-bold text-uppercase mb-3" style="font-size: 0.75rem;">Anbefalt produkt</h6>
+                        <div id='product-component-1775938707606'></div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- JavaScript for å åpne/lukke menyen -->
+    <!-- JS FOR MENY -->
     <script>
         function toggleMenu() {
             document.getElementById('body').classList.toggle('menu-open');
         }
     </script>
 
+    <!-- DIN SHOPIFY SCRIPT KODE -->
+    <script type="text/javascript">
+    /*<![CDATA[*/
+    (function () {
+      var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+      if (window.ShopifyBuy) {
+        if (window.ShopifyBuy.UI) {
+          ShopifyBuyInit();
+        } else {
+          loadScript();
+        }
+      } else {
+        loadScript();
+      }
+      function loadScript() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = scriptURL;
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+        script.onload = ShopifyBuyInit;
+      }
+      function ShopifyBuyInit() {
+        var client = ShopifyBuy.buildClient({
+          domain: 'bzj3u1-s6.myshopify.com',
+          storefrontAccessToken: '22fd5102cdd15a5e237f985e917cce4c',
+        });
+        ShopifyBuy.UI.onReady(client).then(function (ui) {
+          ui.createComponent('product', {
+            id: '8606093672606',
+            node: document.getElementById('product-component-1775938707606'),
+            moneyFormat: '%7B%7Bamount_with_comma_separator%7D%7D%20kr',
+            options: {
+      "product": {
+        "styles": {
+          "product": {
+            "@media (min-width: 601px)": {
+              "max-width": "100%",
+              "margin-left": "0",
+              "margin-bottom": "0"
+            }
+          },
+          "button": {
+            "background-color": "#0d6efd",
+            ":hover": { "background-color": "#0b5ed7" },
+            "border-radius": "8px"
+          }
+        },
+        "text": {
+          "button": "Legg i handlekurv"
+        }
+      },
+      "cart": {
+        "text": {
+          "total": "Sum",
+          "button": "Til kassen",
+          "title": "Handlekurv"
+        }
+      }
+    },
+          });
+        });
+      }
+    })();
+    /*]]>*/
+    </script>
 </body>
 </html>
